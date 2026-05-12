@@ -1,0 +1,6 @@
+@Vocabularity_Server_HostAddress = http://localhost:5292
+
+GET {{Vocabularity_Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
