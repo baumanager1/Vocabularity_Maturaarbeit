@@ -1,0 +1,25 @@
+.navbar-nav{
+    transform: translateX(-80px);
+}
+.navbar .nav-link {
+    color: black;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 30px;
+}
+.navList {
+    list-style-type: none;
+}
+
+.profilePicture {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+#navbar-brand {
+    font-size: 30px;
+    font-weight: bold;
+    transform: translateX(-80px);
+}
