@@ -8,19 +8,23 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Homepage from './pages/Homepage'
 import Navbar from './components/Navbar'
 import Learn from './pages/Learnpage'
+import { AuthProvider } from './components/Authentication/AuthContext';
+import Loginpage from './pages/Loginpage';
 
 
 export default function App() {
   return(
 <>
-
-<Navbar />
+<AuthProvider>
+  <Navbar />
 
 <Routes>
   <Route path="/" element={<Homepage />} />
   <Route path='/navbar' element ={<Navbar />} />
   <Route path='/learn' element={ <Learn />} />
+  <Route path='/login' element={<Loginpage />} />
 </Routes>
+</AuthProvider>
 </>
   )
 }

@@ -1,9 +1,31 @@
+import { useContext } from "react";
+import { useAuth } from "../components/Authentication/AuthContext";
+import "../styles/homepage.scss";
 export default function Homepage() {
+    const { user } = useAuth();
     return (
         <>
-                <h1>Homepage</h1>
-        <h1>Welcome to Vocabularity!</h1>
+        {user ? (
+            <h1 id="welcome-message">Continue where you left off, {user.username}!</h1>
+        ) : (
+            <>
+            <div className ="container-fluid">
+                <div className="row">
+                    <h1>Homepage</h1>
+                </div>
+                <div className="row login-prompt">   
+                      <h1 id="login-prompt">Dear User, please login to continue</h1>
+                </div>
+                <div className="row login-button">
+                    <div className="col d-flex justify-content-center">
+                        <button className="btn btn-primary" onClick={() => window.location.href = "/login"}>Login</button>
+                    </div>
+                </div>
+            </div>
+           
+          
+            </>
+        )}
         </>
-
-    )
+    );
 }
