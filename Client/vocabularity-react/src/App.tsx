@@ -10,6 +10,8 @@ import Navbar from './components/Navbar'
 import Learn from './pages/Learnpage'
 import { AuthProvider } from './components/Authentication/AuthContext';
 import Loginpage from './pages/Loginpage';
+import Profilepage from './pages/Profilepage';
+import InternalServerErrorPage from './pages/Errorpages/InternalServerErrorPage';
 
 
 export default function App() {
@@ -20,9 +22,13 @@ export default function App() {
 
 <Routes>
   <Route path="/" element={<Homepage />} />
+  <Route path="/dashboard" element={<Homepage />} />
   <Route path='/navbar' element ={<Navbar />} />
   <Route path='/learn' element={ <Learn />} />
   <Route path='/login' element={<Loginpage />} />
+  <Route path='/profile' element={<Profilepage />} />
+  <Route path='/signedout' element={<h1>You have been signed out successfully!</h1>} />
+  <Route path='/error500' element={<InternalServerErrorPage />} />
 </Routes>
 </AuthProvider>
 </>

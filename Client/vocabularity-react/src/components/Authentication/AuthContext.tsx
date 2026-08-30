@@ -1,4 +1,5 @@
 import {createContext, useContext, useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface User {
     username : string;
@@ -17,17 +18,20 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({children} : {children : React.ReactNode}) {
     const [user, setUser] = useState<User | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('jwt');
-     //   const fakeUser= {
-   //         username: "TestUser",
-    //        email: "test@example.com",
-    //        subject: "123",
-   //         picture: "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-   //     }
-   //     setUser(fakeUser);
-        if(!token) return;
+        const fakeUser= {
+            username: "TestUser",
+           email: "test@example.com",
+           subject: "123",
+            picture: "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+       }
+        //setUser(fakeUser);
+        if(!token) {
+            return;
+        }
 
         const payload = JSON.parse(atob(token.split('.')[1]));
         setUser({
@@ -51,12 +55,20 @@ export function AuthProvider({children} : {children : React.ReactNode}) {
     }
 
     function logout() {
-        localStorage.removeItem('jwt');
-        setUser(null);
+        try {
+            localStorage.removeItem('jwt');
+            setUser(null);
+            navigate("/signedout");
+        }
+        catch (error) {
+            console.error("Error during logout:", error);
+            navigate("/error500 ", {state: {message: (error as Error).message}});
+        }
+
     }
 
     return (
-        <AuthContext.Provider value={{user, login, logout}}>
+        <AuthContext.Provider value={{user,login, logout}}>
             {children}
         </AuthContext.Provider>
     );
