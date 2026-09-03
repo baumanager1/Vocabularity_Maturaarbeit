@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Vocabularity_Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f2f7b514fafed9698c40ef9bafb8e5c3a77db37")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a58009094b547c8aa5145c767923956d2fd945f1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Vocabularity_Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Vocabularity_Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

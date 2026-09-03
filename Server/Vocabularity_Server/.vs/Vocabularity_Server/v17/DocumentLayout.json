@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Projects\\Vocabularity_Maturaarbeit\\Server\\Vocabularity_Server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|c:\\projects\\vocabularity_maturaarbeit\\server\\vocabularity_server\\vocabularity_server\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|solutionrelative:vocabularity_server\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|c:\\projects\\vocabularity_maturaarbeit\\server\\vocabularity_server\\vocabularity_server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|solutionrelative:vocabularity_server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|c:\\projects\\vocabularity_maturaarbeit\\server\\vocabularity_server\\vocabularity_server\\vocabularity_server.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
       "RelativeMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|solutionrelative:vocabularity_server\\vocabularity_server.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|c:\\projects\\vocabularity_maturaarbeit\\server\\vocabularity_server\\vocabularity_server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|solutionrelative:vocabularity_server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|c:\\projects\\vocabularity_maturaarbeit\\server\\vocabularity_server\\vocabularity_server\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|solutionrelative:vocabularity_server\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AB46501C-E239-4510-8408-EF90BC98543C}|Vocabularity_Server\\Vocabularity_Server.csproj|c:\\projects\\vocabularity_maturaarbeit\\server\\vocabularity_server\\vocabularity_server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -34,15 +34,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Projects\\Vocabularity_Maturaarbeit\\Server\\Vocabularity_Server\\Vocabularity_Server\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "Vocabularity_Server\\Properties\\launchSettings.json",
@@ -62,7 +58,8 @@
               "ToolTip": "C:\\Projects\\Vocabularity_Maturaarbeit\\Server\\Vocabularity_Server\\Vocabularity_Server\\Vocabularity_Server.csproj",
               "RelativeToolTip": "Vocabularity_Server\\Vocabularity_Server.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-05-12T10:02:33.176Z"
+              "WhenOpened": "2026-05-12T10:02:33.176Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -90,15 +87,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Projects\\Vocabularity_Maturaarbeit\\Server\\Vocabularity_Server\\Vocabularity_Server\\Program.cs",
               "RelativeDocumentMoniker": "Vocabularity_Server\\Program.cs",
               "ToolTip": "C:\\Projects\\Vocabularity_Maturaarbeit\\Server\\Vocabularity_Server\\Vocabularity_Server\\Program.cs",
               "RelativeToolTip": "Vocabularity_Server\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-12T09:57:05.352Z"
+              "WhenOpened": "2026-05-12T09:57:05.352Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",

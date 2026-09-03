@@ -16,7 +16,7 @@ export default function MyNavbar() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="navbar mx-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/study">Study</Nav.Link>
+                        <Nav.Link href="/learn">Study</Nav.Link>
                         <Nav.Link href="/create">Create</Nav.Link>
                         <Nav.Link href="/japanese">日本語</Nav.Link>
                         {user ? (

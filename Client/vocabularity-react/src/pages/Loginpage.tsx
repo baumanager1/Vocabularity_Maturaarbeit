@@ -30,7 +30,7 @@ export default function Loginpage() {
 
     async function handleLoginSuccess(credentialResponse: CredentialResponse) {
         try {
-            const response = await fetch("https://localhost:7112/auth/google", {
+            const response = await fetch("https://vocabularity.site/api/auth/google", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

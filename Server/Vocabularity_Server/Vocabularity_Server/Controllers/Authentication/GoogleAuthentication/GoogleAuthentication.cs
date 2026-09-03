@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.Intrinsics.X86;
 namespace Vocabularity_Server.Controllers.Authentication.GoogleAuthentication
 {
-    [Route("/auth/google")]
+    [Route("/api/auth/google")]
     [ApiController]
     public class GoogleAuthentication(IConfiguration config) : ControllerBase
     {

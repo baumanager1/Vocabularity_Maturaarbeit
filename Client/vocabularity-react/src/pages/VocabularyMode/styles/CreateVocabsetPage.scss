@@ -1,0 +1,19 @@
+.language-select {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  background: none;
+  font-weight:bold;
+   overflow: visible;
+  white-space: nowrap;
+  width: 120%;
+}
+
+.language-select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.language-select-option {
+  font-weight: bold;
+}
