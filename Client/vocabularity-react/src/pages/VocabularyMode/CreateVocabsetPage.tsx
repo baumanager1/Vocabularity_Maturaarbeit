@@ -30,7 +30,6 @@ export default function CreateVocabsetPage({}) {
         "languageName": "default"
     });
     const[vocabularySet, setVocabularySet] = useState<VocabularySet>(
-        new VocabularySet( {id: crypto.randomUUID(), title:vocabSetTitle , description: vocabSetDescription, termLanguage:termLanguage, definitionLanguage :definitionLanguage, cards: cards })
     );
     const [selectedTermLanguage, setSelectedTermLanguage] = useState("default");
     const [selectedDefinitionLanguage, setSelectedDefinitionLanguage] = useState("default");
@@ -42,6 +41,7 @@ export default function CreateVocabsetPage({}) {
     const [cardErrors, setCardErrors] = useState<Record<number, string>>({});
     const [termLanguageError, setTermLanguageError] = useState("");
     const [definitionLanguageError, setDefinitionLanguageError] = useState("");
+    const [isSameLanguageError, setIsSameLanguageError] = useState(false);
 
 
     const addCard = () => { 
@@ -70,33 +70,71 @@ export default function CreateVocabsetPage({}) {
     const onLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>, languageType: LanguageType) => {
         const selectedLanguageCode = event.target.value;
 
+        const selectedLanguage = learningLanguages.find(language => language.languageCode === selectedLanguageCode);
+
+        if(!selectedLanguage) {
+            return;
+        }
+
+        const newTermLanguage = languageType === LanguageType.Term ? selectedLanguageCode : selectedTermLanguage;
+
+        const newDefinitionLanguage = languageType === LanguageType.Definition ? selectedLanguageCode : selectedDefinitionLanguage;
+
+        const sameLanguage = newTermLanguage === newDefinitionLanguage;
+
         if(languageType === LanguageType.Term) {
             setSelectedTermLanguage(selectedLanguageCode);
-            setTermLanguageError("")
+            setTermLanguage(selectedLanguage);
         }
+
         else {
             setSelectedDefinitionLanguage(selectedLanguageCode);
-            setDefinitionLanguageError("")
+            setDefinitionLanguage(selectedLanguage);
         }
+
+        setIsSameLanguageError(sameLanguage);
+
+        setTermLanguageError(sameLanguage ? "Term and definition languages cannot be the same" : "");
+
+        setDefinitionLanguageError(sameLanguage ? "Term and definition languages cannot be the same" : "");
+
     }
 
-    const submitVocabSet = (event: React.FormEvent<HTMLFormElement>) => {
+    const submitVocabSet = async(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+
+        const titleIsInvalid = vocabSetTitle.trim() === "";
+        const descriptionIsInvalid = vocabSetDescription.trim() === "";
+        const termLanguageIsInvalid = !Object.keys(LearningLanguages).includes(selectedTermLanguage);
+        const definitionLanguageIsInvalid = !Object.keys(LearningLanguages).includes(selectedDefinitionLanguage);
+
 
         setTitleError(vocabSetTitle.trim() === "" ? "Title is required!" : "");
         setDescriptionError(vocabSetDescription.trim() === "" ? "Description is required" : "");
-        if(Object.keys(LearningLanguages).includes(selectedTermLanguage)) {
-            setTermLanguageError("");
-        }
-        else {
-            setTermLanguageError("Please select a term language")
-        }
-         if(Object.keys(LearningLanguages).includes(selectedDefinitionLanguage)) {
-            setDefinitionLanguageError("");
-        }
-        else {
-            setDefinitionLanguageError("Please select a definition language")
-        }
+
+        const sameLanguageIsInvalid = selectedTermLanguage !== "default" && 
+        selectedDefinitionLanguage !== "default" &&
+        selectedTermLanguage === selectedDefinitionLanguage;
+
+        setTermLanguageError(
+            termLanguageIsInvalid 
+            ? "Please select a term language" 
+            : sameLanguageIsInvalid 
+            ? "Term and definition languages cannot be the same" 
+            : ""
+        );
+
+        setDefinitionLanguageError(
+            definitionLanguageIsInvalid 
+            ? "Please select a definition language" 
+            : sameLanguageIsInvalid 
+            ? "Term and definition languages cannot be the same" 
+            : ""
+        );
+        setTermLanguageError(isSameLanguageError ? "Term and definition languages cannot be the same" : "");
+        setDefinitionLanguageError(isSameLanguageError ? "Term and definition languages cannot be the same" : "");
+
        // setDefinitionLanguageError(selectedDefinitionLanguage === "default" ? "Please select a definition language" : "");
 
         const cardErrors: Record<number, string> = {};
@@ -120,10 +158,20 @@ export default function CreateVocabsetPage({}) {
         });
         
         setCardErrors(cardErrors);
+        // STOP HERE if ANY validation failed
 
-        if (Object.keys(cardErrors).length > 0) {
+        if (
+            titleIsInvalid ||
+            descriptionIsInvalid || 
+            termLanguageIsInvalid ||
+            definitionLanguageIsInvalid ||
+            sameLanguageIsInvalid ||
+            Object.keys(cardErrors).length > 0
+        ) {
             return;
         }
+
+    // Only valid forms reach this point
 
         const validCards = cards 
             .filter(card => !EmptyCards.includes(card.id))
@@ -133,8 +181,41 @@ export default function CreateVocabsetPage({}) {
             }))
 
         setCards(validCards);
+        const Vocabset =new VocabularySet( {id: crypto.randomUUID(), title:vocabSetTitle , description: vocabSetDescription, termLanguage:termLanguage, definitionLanguage :definitionLanguage, cards: validCards })
+        const json:string = JSON.stringify(Vocabset)
+        console.log("JSON: ", json)
+        const response = await fetch("https://localhost:7112/api/learnmode/vocabset/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: json
+        });
+        console.log("Response: ", response)
+
+        if (response.status === 201) {
+            navigate("/learn/vocabset-created")
+        }
+        else if (response.status === 409 ) {
+            const data = await response.json();
+            if (data.error === "DUPLICATE_TITLE") {
+                setTitleError("A vocabulary set with this title already exists. Please choose a different title.");
+            }
+            else if (data.error === "SAME_LANGUAGE")
+            {
+                setIsSameLanguageError(true);
+                setTermLanguageError("Term and definition languages cannot be the same");
+                setDefinitionLanguageError("Term and definition languages cannot be the same");
+            }
+
+        }
+        else if (response.status === 500) {
+
+            navigate("/error500 ", {state: {message: response.statusText}});
+        }
 
         console.log("Submitting Vocabulary Set");
+        console.log("Json: ", json)
         console.log("Vocabulary Set Title: ", vocabSetTitle);
         console.log("Vocabulary Set Description: ", vocabSetDescription);
         console.log("Term Language: ", selectedTermLanguage);

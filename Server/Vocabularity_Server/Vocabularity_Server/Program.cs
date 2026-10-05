@@ -1,5 +1,7 @@
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Vocabularity_Server.Data;
+
 
 namespace Vocabularity_Server
 {
@@ -40,6 +42,12 @@ namespace Vocabularity_Server
                     };
 
                 });
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(
+                builder.Configuration.GetConnectionString("Postgres")
+                )
+            );
             {
 
 

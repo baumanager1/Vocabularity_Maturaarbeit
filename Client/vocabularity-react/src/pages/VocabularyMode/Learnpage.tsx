@@ -3,7 +3,7 @@ import {useAuth} from "../../components/Authentication/AuthContext";
 import LoginPrompt from "../../components/Authentication/LoginPrompt";
 
 
-export default function Learn() {
+export default function Learnhub() {
     const { user } = useAuth();
     const navigate = useNavigate();
 
