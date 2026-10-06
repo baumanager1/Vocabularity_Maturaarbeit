@@ -20,3 +20,11 @@
 }
 
 
+.learn-floating > label {
+    font-size: 28px;
+}
+
+.learn-floating > .form-control:focus ~ label,
+.learn-floating > .form-control:not(:placeholder-shown) ~ label {
+    font-size: 18px;
+}

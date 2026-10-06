@@ -181,13 +181,14 @@ export default function CreateVocabsetPage({}) {
             }))
 
         setCards(validCards);
-        const Vocabset =new VocabularySet( {id: crypto.randomUUID(), title:vocabSetTitle , description: vocabSetDescription, termLanguage:termLanguage, definitionLanguage :definitionLanguage, cards: validCards })
+        const Vocabset =new VocabularySet( {vocabularySetId: crypto.randomUUID(), title:vocabSetTitle , description: vocabSetDescription, termLanguage:termLanguage, definitionLanguage :definitionLanguage, cards: validCards })
         const json:string = JSON.stringify(Vocabset)
         console.log("JSON: ", json)
         const response = await fetch("https://localhost:7112/api/learnmode/vocabset/create", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('jwt')
             },
             body: json
         });
@@ -210,8 +211,11 @@ export default function CreateVocabsetPage({}) {
 
         }
         else if (response.status === 500) {
+        const data = await response.json();
 
-            navigate("/error500 ", {state: {message: response.statusText}});
+        console.log(data.error);
+        console.log(data.details);
+           // navigate("/error500 ", {state: {message: response.statusText}});
         }
 
         console.log("Submitting Vocabulary Set");

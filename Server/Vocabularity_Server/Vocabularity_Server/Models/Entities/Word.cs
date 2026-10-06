@@ -18,10 +18,13 @@ namespace Vocabularity_Server.Models.Entities
         [Column("definition")]
         public string Definition { get; set; } = "";
 
-        [Column("vocabsetnumber")]
-        public int VocabSetNumber { get; set; }
+        [Column("is_learned")]
+        public bool learnState { get; set; }
 
-        [ForeignKey(nameof(VocabSetNumber))]
+        [Column("vocabularysetid")]
+        public Guid VocabularySetId { get; set; }
+
+        [ForeignKey(nameof(VocabularySetId))]
         public VocabularySet VocabularySet { get; set; } = null!;
 
     }

@@ -4,7 +4,7 @@ namespace Vocabularity_Server.Models.VocabularyMode.Requests
 {
     public class CreateVocabularySetRequest
     {
-        public Guid Id {  get; set; }
+        public Guid VocabularySetId {  get; set; }
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
 

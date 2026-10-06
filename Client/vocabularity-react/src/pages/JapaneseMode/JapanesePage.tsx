@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {useAuth} from "../../components/Authentication/AuthContext";
 
 
-export default function Japanese() {
+export default function JapanesePage() {
     const { user } = useAuth();
     const navigate = useNavigate();
 

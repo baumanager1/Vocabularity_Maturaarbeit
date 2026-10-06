@@ -2,7 +2,7 @@ import { LanguagePair, LearningLanguages } from "./Languagepair";
 import VocabularyCard from "./VocabularyCard";
 
 export default class VocabularySet {
-    id: string;
+    vocabularySetId: string;
     title: string;
     description: string;
     termLanguage: LanguagePair;
@@ -10,14 +10,14 @@ export default class VocabularySet {
     cards: VocabularyCard[];
 
     constructor(parameters: {
-        id: string,
+        vocabularySetId: string,
         title: string,
         description: string, 
         termLanguage: LanguagePair, 
         definitionLanguage: LanguagePair, 
         cards: VocabularyCard[];
     }) {
-        this.id = parameters.id;
+        this.vocabularySetId = parameters.vocabularySetId;
         this.title = parameters.title;
         this.description = parameters.description;
         this.termLanguage = parameters.termLanguage;

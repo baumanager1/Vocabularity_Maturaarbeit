@@ -9,6 +9,8 @@ namespace Vocabularity_Server.Models.Entities
         [Key]
         [Column("id")]
         public int Id { get; set; }
+        [Column("vocabularysetid")]
+        public Guid VocabularySetId { get; set; }
 
         [Column("title")]
         public string Title { get; set; } = "";

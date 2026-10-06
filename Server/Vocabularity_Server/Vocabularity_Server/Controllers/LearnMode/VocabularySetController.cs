@@ -4,12 +4,15 @@ using System.Diagnostics;
 using Vocabularity_Server.Data;
 using Vocabularity_Server.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Vocabularity_Server.Controllers.LearnMode
 {
-    [Route("api/learnmode/vocabset/")]
+    [Authorize]
+    [Route("api/learnmode/vocabset")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public class VocabularySetController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -19,18 +22,52 @@ namespace Vocabularity_Server.Controllers.LearnMode
             _appDbContext = context;
         }
 
-        // GET: api/<VocabularySetscontroller>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET api/<VocabularySetscontroller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{vocabsetId}")]
+        public async Task<IActionResult> GetVocabularySet(Guid vocabsetId)
         {
-            return "value";
+            try
+            {
+                var vocabSet = await _appDbContext.VocabularySets
+                    .Where(v => v.VocabularySetId == vocabsetId)
+                    .Select(v => new
+                    {
+                        v.TermLanguage,
+                        v.DefinitionLanguage,
+
+                        Words = v.Words.Select(w => new
+                        {
+                            w.Id,
+                            w.Term,
+                            w.Definition
+                            
+                        }).ToList()
+
+                    })
+                    .FirstOrDefaultAsync();
+                if (vocabSet != null) {
+                    return Ok(vocabSet);
+
+                }
+                else
+                {
+                    return BadRequest(
+                    new
+                    {
+                        error = "VOCABSET_ID_NULL",
+                        message = "There doesn't exist a vocabulary set matching the provided id."
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                new
+                {
+                    error = "Failed to fetch vocabulary set.",
+                    details = ex.Message
+                });
+            }
         }
 
         // POST api/<VocabularySetscontroller>
@@ -54,10 +91,9 @@ namespace Vocabularity_Server.Controllers.LearnMode
 
             try
             {
-
-
                 var vocabularySet = new VocabularySet
                 {
+                    VocabularySetId = request.VocabularySetId,
                     Title = request.Title,
                     Description = request.Description,
                     TermLanguage = request.TermLanguage.languageCode,
@@ -104,7 +140,7 @@ namespace Vocabularity_Server.Controllers.LearnMode
                     new
                     {
                         error = "Failed to create Vocabulary Set.",
-                        details = ex.Message
+                        details  = ex.GetBaseException().Message
                     }
                 );
             }
@@ -120,6 +156,75 @@ namespace Vocabularity_Server.Controllers.LearnMode
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpPatch("{vocabularySetId}/words/{wordId}/learn-state")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> ChangeLearnState(
+            Guid? vocabularySetId,
+            int? wordId,
+            [FromBody] ChangeLearnstateVocabSetRequest request)
+        {
+            if (vocabularySetId == null)
+            {
+                return BadRequest(new
+                {
+                    error = "MISSING_VOCABULARY_SET_ID",
+                    message = "VocabularySetId is required."
+                });
+            }
+
+            if (request.learnState == null)
+            {
+                return BadRequest(new
+                {
+                    error = "MISSING_TITLE",
+                    message = "Title is required."
+                });
+            }
+
+            if (wordId == null)
+            {
+                return BadRequest(new
+                {
+                    error = "MISSING_WORD_ID",
+                    message = "WordId is required."
+                });
+            }
+
+            var word = await _appDbContext.Words
+                .FirstOrDefaultAsync(w =>
+                w.Id == wordId &&
+                w.VocabularySetId == vocabularySetId);
+
+
+            if (word == null)
+            {
+                return NotFound(new
+                {
+                    error = "WORD_NOT_FOUND",
+                    message = "The word does not exist in this vocabulary set."
+                });
+            }
+
+            try
+            {
+                word.learnState = request.learnState.Value;
+                await _appDbContext.SaveChangesAsync();
+
+                return NoContent();
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                new
+                {
+                    error = "Failed to Patch Vocabulary Set.",
+                    details = ex.GetBaseException().Message
+                });
+
+            }
         }
     }
 }

@@ -1,0 +1,33 @@
+
+.confetti-animation {
+   position: fixed;
+   top: 0;
+   left: 0;
+   
+   width: 100vw;
+   height: 100vh;
+
+   z-index: 999999;
+   pointer-events: none;
+}
+
+.completion-container {
+    position: relative;
+    text-align: center;
+}
+
+
+#completion-message {
+    position:relative;
+    top:100px;
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#back-button {
+    position: relative;
+    top:200px;
+    font-size: 30px;
+    font-weight: bold;
+}

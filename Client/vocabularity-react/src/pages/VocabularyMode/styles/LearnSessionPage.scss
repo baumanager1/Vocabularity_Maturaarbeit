@@ -1,0 +1,59 @@
+.learn-session-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.term-row {
+    margin-top: 100px;
+}
+
+#term {
+    font-size: 80px;
+    text-align: center;
+}
+
+
+.answer-section {
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+
+    width: 33.333%;
+}
+
+.answer-section button {
+    align-self: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#answer-field {
+    font-size: 30px;
+}
+
+#correct-message {
+    font-size: 40px;
+    text-align: center;
+    color: green;
+    font-weight: bold;
+}
+
+#incorrect-message {
+    font-size: 40px;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+#correct-answer-message {
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
