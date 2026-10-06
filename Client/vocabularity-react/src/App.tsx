@@ -13,7 +13,7 @@ import Profilepage from './pages/Profilepage';
 import InternalServerErrorPage from './pages/Errorpages/InternalServerErrorPage';
 import JapanesePage from './pages/JapaneseMode/JapanesePage'
 import CreateVocabsetPage from './pages/VocabularyMode/CreateVocabsetPage';
-import Learnhub from './pages/VocabularyMode/Learnpage';
+import Learnhub from './pages/VocabularyMode/LearnHubPage';
 import VocabsetCreatedPage from './pages/VocabularyMode/VocabsetCreatedPage';
 import LearnSessionPage from './pages/VocabularyMode/LearnSessionPage';
 import SetCompletionPage from './pages/VocabularyMode/SetCompletionPage';

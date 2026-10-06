@@ -5,6 +5,7 @@ using Vocabularity_Server.Data;
 using Vocabularity_Server.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Vocabularity_Server.Controllers.LearnMode
@@ -20,6 +21,39 @@ namespace Vocabularity_Server.Controllers.LearnMode
         public VocabularySetController(AppDbContext context)
         {
             _appDbContext = context;
+        }
+
+        [HttpGet("all-sets")]
+        public async Task<IActionResult> GetAllSets()
+        {
+            try
+            {
+                var vocabularySets = await _appDbContext.VocabularySets
+                    .Select(v => new
+                    {
+                        v.VocabularySetId,
+                        v.Title,
+                        v.Description,
+                        v.TermLanguage,
+                        v.DefinitionLanguage
+                    })
+                    .ToListAsync();
+
+                if(vocabularySets.Count == 0)
+                {
+                    return NoContent();
+                }
+
+                return Ok(vocabularySets);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    error = "Failed to fetch all the vocabulary sets from the Database.",
+                    details = ex.Message
+                });
+            }
         }
 
         // GET api/<VocabularySetscontroller>/5

@@ -26,3 +26,11 @@ export default class VocabularySet {
     }
 
 }
+
+export interface VocabularySetSummary {
+    vocabularySetId: string,
+    title: string,
+    description: string,
+    termLanguage: LanguagePair;
+    definitionLanguage : LanguagePair
+}

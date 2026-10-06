@@ -141,6 +141,26 @@
   },
   {
     "ContainingType": "Vocabularity_Server.Controllers.LearnMode.VocabularySetController",
+    "Method": "GetAllSets",
+    "RelativePath": "api/learnmode/vocabset/all-sets",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 401
+      }
+    ]
+  },
+  {
+    "ContainingType": "Vocabularity_Server.Controllers.LearnMode.VocabularySetController",
     "Method": "CreateVocabSet",
     "RelativePath": "api/learnmode/vocabset/create",
     "HttpMethod": "POST",
