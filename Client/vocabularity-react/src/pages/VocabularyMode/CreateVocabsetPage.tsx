@@ -2,11 +2,12 @@ import { useNavigate } from "react-router-dom";
 import {useAuth} from "../../components/Authentication/AuthContext";
 import LoginPrompt from "../../components/Authentication/LoginPrompt";
 import { useState, useRef } from 'react';
-import { learningLanguages, LanguageType, LanguagePair, LearningLanguages } from "../../models/LearningMode/Languagepair";
+import { learningLanguages, LanguageType, LanguagePair, LearningLanguages , definitionLanguages} from "../../models/LearningMode/Languagepair";
 import getLanguageName from "../../models/LearningMode/Languagepair";
 import "./styles/CreateVocabsetPage.scss";
 import  VocabularyCard from "../../models/LearningMode/VocabularyCard";
 import VocabularySet from "../../models/LearningMode/VocabularySet";
+import { Modal } from "bootstrap";
 
 export default function CreateVocabsetPage({}) {
     const { user } = useAuth();
@@ -34,7 +35,10 @@ export default function CreateVocabsetPage({}) {
     const [selectedTermLanguage, setSelectedTermLanguage] = useState("default");
     const [selectedDefinitionLanguage, setSelectedDefinitionLanguage] = useState("default");
 
-    
+    {/* Json Import States */}    
+    const [jsonInput, setJsonInput] = useState("");
+    const [jsonImportError, setJsonImportError] = useState("");
+
     {/* Form Validation States */}
     const [titleError, setTitleError] = useState("");
     const [descriptionError, setDescriptionError] = useState("");
@@ -43,6 +47,96 @@ export default function CreateVocabsetPage({}) {
     const [definitionLanguageError, setDefinitionLanguageError] = useState("");
     const [isSameLanguageError, setIsSameLanguageError] = useState(false);
 
+
+
+    const importFromJson = () => {
+        try {
+            const data = JSON.parse(jsonInput);
+
+            if(
+                typeof data.title !== "string" ||
+                typeof data.description !== "string" ||
+                !Array.isArray(data.cards)
+            ) {
+                throw new Error("Invalid vocabulary set structure.")
+            }
+
+            const importedTermLanguage = learningLanguages.find(
+                language => language.languageCode === data.termLanguage.languageCode
+            );
+
+            const importedDefinitionLanguage = definitionLanguages.find(
+                language => language.languageCode === data.definitionLanguage.languageCode
+            );
+
+            if (!importedTermLanguage || !importedDefinitionLanguage ) {
+                throw new Error("Invalid language.");
+            }
+
+            if (
+                importedTermLanguage.languageCode === importedDefinitionLanguage.languageCode
+            ) {
+                throw new Error("Term and definition languages cannot be the same.")
+            }
+
+            const importedCards = data.cards.map(
+                (card:any, index:number) => {
+
+                    if (
+                        typeof card.term !== "string" ||
+                        typeof card.definition !== "string"
+                    ) {
+                        throw new Error("Invalid Card structure.")
+                    }
+
+                    return new VocabularyCard(
+                        index + 1,
+                        card.term,
+                        card.definition
+                    );
+                }
+            );
+
+            setVocabSetTitle(data.title);
+            setVocabSetDescription(data.description);
+
+            setTermLanguage(importedTermLanguage);
+            setSelectedTermLanguage(importedTermLanguage.languageCode);
+            setDefinitionLanguage(importedDefinitionLanguage);
+            setSelectedDefinitionLanguage(importedDefinitionLanguage.languageCode);
+
+            setCards(importedCards);
+
+            setJsonImportError("");
+
+            setTitleError("");
+            setDescriptionError("");
+            setCardErrors({});
+            setTermLanguageError("");
+            setDefinitionLanguageError("");
+            setIsSameLanguageError(false);
+
+
+            const modalElement = document.getElementById("importJsonModal");
+
+            if (modalElement) {
+                if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur();
+            }
+                Modal.getOrCreateInstance(modalElement).hide();
+
+        }
+        
+            setJsonInput("");
+        
+        } catch (error) {
+            if (error instanceof Error) {
+                setJsonImportError(error.message)
+            } else {
+                setJsonImportError("Invalid JSON.");
+            }
+        }
+    }
 
     const addCard = () => { 
         const newId = cards.length + 1;
@@ -236,7 +330,42 @@ export default function CreateVocabsetPage({}) {
                     event.preventDefault();
                     submitVocabSet(event);
                     }}>
+                    <div className="row">
+                        <div className="col d-flex justify-content-center">
+                            <div className="col-md-4 mb-3">
+                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importJsonModal">
+                                    Import From Json
+                                </button>
+                                {/* Modal*/}
+                                <div className="modal fade" id="importJsonModal" tabIndex={-1} aria-labelledby="importJsonModalLabel" aria-hidden="true">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h1 className="modal-title fs-5" id="importJsonModalLabel">Import From Json</h1>
+                                            </div>
+                                            <div className="modal-body">
+                                                <textarea className="form-control" id="jsonInputArea" rows={10} value={jsonInput} onChange={(event) => {
+                                                    setJsonInput(event.target.value);
+                                                    setJsonImportError("");
+                                                }}></textarea>
 
+                                                {jsonImportError && (
+                                                    <div className="text-danger mt-2">
+                                                        {jsonImportError}
+                                                    </div>
+)}
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" className="btn btn-primary" onClick={importFromJson}>Import</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <div className="row">
                         <div className="col d-flex justify-content-center">
                             <div className="col-md-4 mb-3">
@@ -420,7 +549,7 @@ export default function CreateVocabsetPage({}) {
 
                                 {/* Definition Language Selection */}
                                 <select className={`form-select language-select ${definitionLanguageError ? "is-invalid" : ""}`} id={`definition-${card.id}-language-select`} onChange={(event) => onLanguageChange(event, LanguageType.Definition)} value={selectedDefinitionLanguage}>
-                                    <option className="vocab-set-form-labels" value="default" disabled selected>Choose a Language</option>
+                                    <option className="vocab-set-form-labels" value="default" disabled>Choose a Language</option>
                                     {learningLanguages.map((language) => (
                                         <option className="vocab-set-form-labels" key={language.languageCode} value={language.languageCode} disabled={language.languageCode === selectedTermLanguage}>
                                             {language.languageName}

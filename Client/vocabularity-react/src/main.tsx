@@ -6,7 +6,7 @@ import './index.scss'
 import App from './App.jsx'
 import "./styles/colors.scss";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-
+import "bootstrap";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <GoogleOAuthProvider clientId="594148206302-ap6mfrultm3rj0qm45sjk2m27i0o56b6.apps.googleusercontent.com">

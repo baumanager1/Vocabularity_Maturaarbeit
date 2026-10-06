@@ -11,6 +11,7 @@ export enum LearningLanguages {
     it = "Italian",
     jp = "Japanese"
 }
+export type DefinitionLanguages = LearningLanguages;
 
 
 export enum LanguageType {
@@ -23,6 +24,9 @@ export const learningLanguages : LanguagePair[] = Object.entries(LearningLanguag
     languageCode,
     languageName
 }));
+
+export const definitionLanguages = learningLanguages;
+
 
 export default function getLanguageName(languageCode:string) {
     return learningLanguages.find((language) => language.languageCode === languageCode)!.languageName;
