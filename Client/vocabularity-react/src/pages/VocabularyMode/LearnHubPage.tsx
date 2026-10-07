@@ -13,7 +13,8 @@ export default function Learnhub() {
 
     useEffect(() => {
         async function loadVocabSets() {
-            const response = await fetch("https://localhost:7112/api/learnmode/vocabset/all-sets",
+            const apiUrl = import.meta.env.VITE_API_URL;
+            const response = await fetch(`${apiUrl}/api/learnmode/vocabset/all-sets`,
                 {
                     method: "GET",
                     headers :{

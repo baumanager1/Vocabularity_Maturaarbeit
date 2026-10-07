@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.Intrinsics.X86;
+using System.Security.Cryptography;
+using System.Text;
+using System.Diagnostics;
 namespace Vocabularity_Server.Controllers.Authentication.GoogleAuthentication
 {
     [Route("/api/auth/google")]
@@ -16,6 +19,7 @@ namespace Vocabularity_Server.Controllers.Authentication.GoogleAuthentication
         [HttpPost]
         public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginDto dto)
         {
+
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
                 Audience = new List<string>() { "594148206302-ap6mfrultm3rj0qm45sjk2m27i0o56b6.apps.googleusercontent.com" }
@@ -33,7 +37,7 @@ namespace Vocabularity_Server.Controllers.Authentication.GoogleAuthentication
             catch (Exception ex)
             {
 
-                System.Diagnostics.Debug.WriteLine("EXCEPTION: " + ex); // now you'll actually see it in the console
+                System.Diagnostics.Debug.WriteLine("EXCEPTION: " + ex); 
                 return BadRequest("Invalid Google token: " + ex.Message);
             }
         }
@@ -48,8 +52,13 @@ namespace Vocabularity_Server.Controllers.Authentication.GoogleAuthentication
                 new System.Security.Claims.Claim("picture", payload.Picture)
             };
 
-            var key = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var jwtKey = _config["Jwt:Key"]!;
+       
+
+            var key = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwtKey));
             var creds = new Microsoft.IdentityModel.Tokens.SigningCredentials(key, Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256);
+
+
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],

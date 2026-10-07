@@ -4,6 +4,7 @@ import { useAuth } from '../components/Authentication/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function Loginpage() {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate(); 
     const {login} = useAuth();
     return (
@@ -30,7 +31,7 @@ export default function Loginpage() {
 
     async function handleLoginSuccess(credentialResponse: CredentialResponse) {
         try {
-            const response = await fetch("https://vocabularity.site/api/auth/google", {
+            const response = await fetch(`${apiUrl}/api/auth/google`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

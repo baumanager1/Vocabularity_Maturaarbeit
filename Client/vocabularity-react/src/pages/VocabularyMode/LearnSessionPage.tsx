@@ -49,7 +49,8 @@ export default function LearnSessionPage() {
                 // correct answer
                 setLearnSessionItems((prevItems) => prevItems.slice(1));
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`https://localhost:7112/api/learnmode/vocabset/${vocabsetid}/words/${currentWord.id}/learn-state`, {
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const response = await fetch(`${apiUrl}/api/learnmode/vocabset/${vocabsetid}/words/${currentWord.id}/learn-state`, {
                     method: "PATCH",
                     headers: {
                     "Authorization": "Bearer " + token,
@@ -91,8 +92,8 @@ export default function LearnSessionPage() {
         async function fetchVocabset() {
             try {
                 const token = localStorage.getItem('jwt');
-
-                const response = await fetch("https://localhost:7112/api/learnmode/vocabset/" + vocabsetid, {
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const response = await fetch(`${apiUrl}/api/learnmode/vocabset/` + vocabsetid, {
                     method: "GET",
                     headers: {
                         "Authorization": "Bearer " + token,
