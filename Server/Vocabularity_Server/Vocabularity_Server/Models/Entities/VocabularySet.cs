@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Vocabularity_Server.Models.Entities
@@ -23,6 +24,11 @@ namespace Vocabularity_Server.Models.Entities
 
         [Column("definitionlanguage")]
         public string DefinitionLanguage { get; set; } = "";
+
+        [Column("userid")]
+        public Guid UserId { get; set; }
+
+        public User User { get; set; } = null!;
 
         public List<Word> Words { get; set; } = new List<Word> { };
     }

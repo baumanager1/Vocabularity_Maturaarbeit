@@ -6,6 +6,7 @@ using Vocabularity_Server.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Vocabularity_Server.Extensions;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Vocabularity_Server.Controllers.LearnMode
@@ -14,28 +15,40 @@ namespace Vocabularity_Server.Controllers.LearnMode
     [Route("api/learnmode/vocabset")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public class VocabularySetController : ControllerBase
-    {
-        private readonly AppDbContext _appDbContext;
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public VocabularySetController(AppDbContext context)
-        {
-            _appDbContext = context;
-        }
+
+    public class VocabularySetController(AppDbContext context) : ControllerBase
+    {
+        private readonly AppDbContext _appDbContext = context;
 
         [HttpGet("all-sets")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+
+
         public async Task<IActionResult> GetAllSets()
         {
+            if (User.GetUserId() is not Guid userId)
+            {
+                return Unauthorized(new
+                {
+                    error = "INVALID_USER_CLAIM",
+                    message = "Please login to continue."
+                });
+            }
+
             try
             {
                 var vocabularySets = await _appDbContext.VocabularySets
+                    .Where(v => v.UserId == userId)
                     .Select(v => new
                     {
                         v.VocabularySetId,
                         v.Title,
                         v.Description,
                         v.TermLanguage,
-                        v.DefinitionLanguage
+                        v.DefinitionLanguage,
                     })
                     .ToListAsync();
 
@@ -58,12 +71,28 @@ namespace Vocabularity_Server.Controllers.LearnMode
 
         // GET api/<VocabularySetscontroller>/5
         [HttpGet("{vocabsetId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+
+
         public async Task<IActionResult> GetVocabularySet(Guid vocabsetId)
         {
+            if (User.GetUserId() is not Guid userId)
+            {
+                return Unauthorized(new
+                {
+                    error = "INVALID_USER_CLAIM",
+                    message = "Please login to continue."
+                });
+            }
+
             try
             {
                 var vocabSet = await _appDbContext.VocabularySets
-                    .Where(v => v.VocabularySetId == vocabsetId)
+                    .Where(v => v.VocabularySetId == vocabsetId &&
+                                v.UserId == userId
+                    )
                     .Select(v => new
                     {
                         v.TermLanguage,
@@ -85,7 +114,7 @@ namespace Vocabularity_Server.Controllers.LearnMode
                 }
                 else
                 {
-                    return BadRequest(
+                    return NotFound(
                     new
                     {
                         error = "VOCABSET_ID_NULL",
@@ -106,7 +135,6 @@ namespace Vocabularity_Server.Controllers.LearnMode
 
         // POST api/<VocabularySetscontroller>
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [HttpPost("create")]
         public async Task<IActionResult> CreateVocabSet([FromBody] CreateVocabularySetRequest request)
@@ -125,6 +153,15 @@ namespace Vocabularity_Server.Controllers.LearnMode
 
             try
             {
+                if(User.GetUserId() is not Guid userId)
+                {
+                    return Unauthorized(new
+                    {
+                        error = "INVALID_USER_CLAIM",
+                        message = "Please login to continue."
+                    });
+                }
+
                 var vocabularySet = new VocabularySet
                 {
                     VocabularySetId = request.VocabularySetId,
@@ -137,10 +174,14 @@ namespace Vocabularity_Server.Controllers.LearnMode
                     {
                         Term = card.Term,
                         Definition = card.Definition,
-                    }).ToList()
+                    }).ToList(),
+                    UserId = userId
                 };
                 bool titleExists = await _appDbContext.VocabularySets
-                .AnyAsync(v => v.Title.ToLower() == request.Title.ToLower());
+                .AnyAsync(v => 
+                v.Title.ToLower() == request.Title.ToLower() &&
+                v.UserId == userId
+                );
 
                 if (titleExists)
                 {
@@ -190,15 +231,30 @@ namespace Vocabularity_Server.Controllers.LearnMode
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+  
         }
 
         [HttpPatch("{vocabularySetId}/words/{wordId}/learn-state")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+
         public async Task<IActionResult> ChangeLearnState(
             Guid? vocabularySetId,
             int? wordId,
             [FromBody] ChangeLearnstateVocabSetRequest request)
         {
+            if (User.GetUserId() is not Guid userId)
+            {
+                return Unauthorized(new
+                {
+                    error = "INVALID_USER_CLAIM",
+                    message = "Please login to continue."
+                });
+            }
+
+
             if (vocabularySetId == null)
             {
                 return BadRequest(new
@@ -212,8 +268,8 @@ namespace Vocabularity_Server.Controllers.LearnMode
             {
                 return BadRequest(new
                 {
-                    error = "MISSING_TITLE",
-                    message = "Title is required."
+                    error = "MISSING_LEARN_STATE",
+                    message = "Learn State is required."
                 });
             }
 
@@ -229,7 +285,9 @@ namespace Vocabularity_Server.Controllers.LearnMode
             var word = await _appDbContext.Words
                 .FirstOrDefaultAsync(w =>
                 w.Id == wordId &&
-                w.VocabularySetId == vocabularySetId);
+                w.VocabularySetId == vocabularySetId.Value
+                && w.VocabularySet.UserId == userId
+                );
 
 
             if (word == null)

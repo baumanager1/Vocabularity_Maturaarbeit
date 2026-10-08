@@ -104,6 +104,10 @@ export default function LearnSessionPage() {
             console.log("Content-Type:", response.headers.get("content-type"));
 
             if (!response.ok) {
+                if(response.status === 404) {
+                    navigate("/404");
+                    return
+                }
                 console.error("Request failed:", response.status);
                 return;
             }

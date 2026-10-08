@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
+using Vocabularity_Server.Controllers.Authentication;
 using Vocabularity_Server.Data;
 
 
@@ -65,6 +67,7 @@ namespace Vocabularity_Server
                 builder.Configuration.GetConnectionString("Postgres")
                 )
             );
+            builder.Services.AddScoped<JwtService>();
             {
 
 
@@ -93,7 +96,6 @@ namespace Vocabularity_Server
 
 
                 app.MapControllers();
-                
 
                 app.Run();
             }

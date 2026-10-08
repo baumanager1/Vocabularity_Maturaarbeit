@@ -278,7 +278,9 @@ export default function CreateVocabsetPage({}) {
         const Vocabset =new VocabularySet( {vocabularySetId: crypto.randomUUID(), title:vocabSetTitle , description: vocabSetDescription, termLanguage:termLanguage, definitionLanguage :definitionLanguage, cards: validCards })
         const json:string = JSON.stringify(Vocabset)
         console.log("JSON: ", json)
-        const response = await fetch("https://localhost:7112/api/learnmode/vocabset/create", {
+        const apiUrl = import.meta.env.VITE_API_URL;
+
+        const response = await fetch(`${apiUrl}/api/learnmode/vocabset/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

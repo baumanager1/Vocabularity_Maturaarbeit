@@ -1,6 +1,6 @@
 [
   {
-    "ContainingType": "Vocabularity_Server.Controllers.Authentication.GoogleAuthentication.GoogleAuthentication",
+    "ContainingType": "Vocabularity_Server.Controllers.Authentication.GoogleAuthentication",
     "Method": "GoogleLogin",
     "RelativePath": "api/auth/google",
     "HttpMethod": "POST",
@@ -9,11 +9,42 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "Vocabularity_Server.Controllers.Authentication.GoogleAuthentication.GoogleLoginDto",
+        "Type": "Vocabularity_Server.Controllers.Authentication.GoogleLoginDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Vocabularity_Server.Controllers.Authentication.AuthController",
+    "Method": "CredentialsLogin",
+    "RelativePath": "api/auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Vocabularity_Server.Models.Authentication.Requests.CredentialsLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 401
+      }
+    ]
   },
   {
     "ContainingType": "Vocabularity_Server.Controllers.LearnMode.VocabularySetController",
@@ -43,6 +74,11 @@
           "text/json"
         ],
         "StatusCode": 401
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
       }
     ]
   },
@@ -69,6 +105,11 @@
           "text/json"
         ],
         "StatusCode": 401
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
       }
     ]
   },
@@ -95,6 +136,25 @@
           "text/json"
         ],
         "StatusCode": 401
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
       }
     ]
   },
@@ -135,7 +195,30 @@
       {
         "Type": "System.Void",
         "MediaTypes": [],
+        "StatusCode": 500
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
         "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
       }
     ]
   },
@@ -156,6 +239,21 @@
           "text/json"
         ],
         "StatusCode": 401
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
       }
     ]
   },
@@ -186,12 +284,12 @@
       {
         "Type": "System.Void",
         "MediaTypes": [],
-        "StatusCode": 201
+        "StatusCode": 500
       },
       {
         "Type": "System.Void",
         "MediaTypes": [],
-        "StatusCode": 500
+        "StatusCode": 201
       },
       {
         "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",

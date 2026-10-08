@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "frG4SlkVc/I=",
+  "dgSpecHash": "ThVyroP4lyI=",
   "success": true,
   "projectFilePath": "C:\\Users\\kevin\\OneDrive - Alte Kantonsschule Aarau\\Vocabularity_Maturaarbeit\\Server\\Vocabularity_Server\\Vocabularity_Server\\Vocabularity_Server.csproj",
   "expectedPackageFiles": [
@@ -48,7 +48,10 @@
     "C:\\Users\\kevin\\.nuget\\packages\\system.composition.runtime\\9.0.0\\system.composition.runtime.9.0.0.nupkg.sha512",
     "C:\\Users\\kevin\\.nuget\\packages\\system.composition.typedparts\\9.0.0\\system.composition.typedparts.9.0.0.nupkg.sha512",
     "C:\\Users\\kevin\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.19.2\\system.identitymodel.tokens.jwt.8.19.2.nupkg.sha512",
-    "C:\\Users\\kevin\\.nuget\\packages\\system.management\\7.0.2\\system.management.7.0.2.nupkg.sha512"
+    "C:\\Users\\kevin\\.nuget\\packages\\system.management\\7.0.2\\system.management.7.0.2.nupkg.sha512",
+    "C:\\Users\\kevin\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-arm64\\10.0.12\\microsoft.netcore.app.runtime.linux-arm64.10.0.12.nupkg.sha512",
+    "C:\\Users\\kevin\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-arm64\\10.0.12\\microsoft.aspnetcore.app.runtime.linux-arm64.10.0.12.nupkg.sha512",
+    "C:\\Users\\kevin\\.nuget\\packages\\microsoft.netcore.app.host.linux-arm64\\10.0.12\\microsoft.netcore.app.host.linux-arm64.10.0.12.nupkg.sha512"
   ],
   "logs": []
 }

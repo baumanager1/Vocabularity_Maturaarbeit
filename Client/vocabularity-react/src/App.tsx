@@ -17,6 +17,7 @@ import Learnhub from './pages/VocabularyMode/LearnHubPage';
 import VocabsetCreatedPage from './pages/VocabularyMode/VocabsetCreatedPage';
 import LearnSessionPage from './pages/VocabularyMode/LearnSessionPage';
 import SetCompletionPage from './pages/VocabularyMode/SetCompletionPage';
+import NotFoundErrorPage from './pages/Errorpages/NotFoundErrorPage';
 
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
 
 <Routes>
   <Route path="/" element={<Homepage />} />
+  <Route path="*" element={<NotFoundErrorPage />} />
   <Route path="/dashboard" element={<Homepage />} />
   <Route path='/navbar' element ={<Navbar />} />
   <Route path='/learn' element={ <Learnhub />} />
@@ -39,6 +41,7 @@ export default function App() {
   <Route path='/learn/vocabset-created' element={<VocabsetCreatedPage />} />
   <Route path='/learn/vocabset/:vocabsetid' element ={<LearnSessionPage />} />
   <Route path='/learn/vocabset/:vocabsetid/completion' element ={<SetCompletionPage />} />
+  <Route path='/404' element={<NotFoundErrorPage/>} />
 </Routes>
 
 </AuthProvider>

@@ -1,11 +1,35 @@
-.google-login-container {
-   display:flex;
-    justify-content: center;
-    align-items: center;
-    height: 40vh;
-}
 #login-advisory {
+    margin-top: 60px;
+    margin-bottom: 70px;
     display: flex;
     justify-content: center;
-    transform: translateY(120px);
 }
+
+.login-container {
+    max-width: 450px;
+    margin-top: 40px;
+}
+
+.user-login {
+    width: 100%;
+}
+
+.login-separator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.login-separator::before,
+.login-separator::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid #ccc;
+}
+
+.google-login {
+    display: flex;
+    justify-content: center;
+}
+
