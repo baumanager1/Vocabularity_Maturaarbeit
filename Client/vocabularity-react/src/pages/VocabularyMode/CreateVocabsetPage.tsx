@@ -48,6 +48,7 @@ export default function CreateVocabsetPage({}) {
     const [definitionLanguageError, setDefinitionLanguageError] = useState("");
     const [isSameLanguageError, setIsSameLanguageError] = useState(false);
     const [created, setIsCreated] = useState(false)
+    const [cardsAmountError,setCardsAmountError] = useState("")
 
 
     const importFromJson = () => {
@@ -55,6 +56,8 @@ export default function CreateVocabsetPage({}) {
             const data = JSON.parse(jsonInput);
 
             if(
+
+                typeof data !== "object" || data === null ||
                 typeof data.title !== "string" ||
                 typeof data.description !== "string" ||
                 !Array.isArray(data.cards)
@@ -62,12 +65,17 @@ export default function CreateVocabsetPage({}) {
                 throw new Error("Invalid vocabulary set structure.")
             }
 
+            
+            if(data.title.length > 100 || data.description.length > 500) {
+                throw new Error("Title or Description is too long");
+            }
+
             const importedTermLanguage = learningLanguages.find(
-                language => language.languageCode === data.termLanguage.languageCode
+                language => language.languageCode === data.termLanguage?.languageCode
             );
 
             const importedDefinitionLanguage = definitionLanguages.find(
-                language => language.languageCode === data.definitionLanguage.languageCode
+                language => language.languageCode === data.definitionLanguage?.languageCode
             );
 
             if (!importedTermLanguage || !importedDefinitionLanguage ) {
@@ -80,14 +88,21 @@ export default function CreateVocabsetPage({}) {
                 throw new Error("Term and definition languages cannot be the same.")
             }
 
+            if(data.cards.length === 0) {
+                throw new Error("The import must contain at least one card.");
+            }
+
             const importedCards = data.cards.map(
                 (card:any, index:number) => {
-
                     if (
-                        typeof card.term !== "string" ||
-                        typeof card.definition !== "string"
+                        typeof card?.term !== "string" ||
+                        typeof card?.definition !== "string"
                     ) {
                         throw new Error("Invalid Card structure.")
+                    }
+                    
+                    if(card.term.length > 100 || card.definition.length > 100) {
+                        throw new Error("A card term or definition is too long.");
                     }
 
                     return new VocabularyCard(
@@ -206,7 +221,7 @@ export default function CreateVocabsetPage({}) {
 
 
         setTitleError(vocabSetTitle.trim() === "" ? "Title is required!" : "");
-        setDescriptionError(vocabSetDescription.trim() === "" ? "Description is required" : "");
+        setDescriptionError(vocabSetDescription.trim() === "" ? "Description is required!" : "");
 
         const sameLanguageIsInvalid = selectedTermLanguage !== "default" && 
         selectedDefinitionLanguage !== "default" &&
@@ -227,8 +242,17 @@ export default function CreateVocabsetPage({}) {
             ? "Term and definition languages cannot be the same" 
             : ""
         );
-        setTermLanguageError(isSameLanguageError ? "Term and definition languages cannot be the same" : "");
-        setDefinitionLanguageError(isSameLanguageError ? "Term and definition languages cannot be the same" : "");
+
+        const filledCards = cards.filter(
+            card => card.term.trim() !== "" && card.definition.trim() !== ""
+        );
+        const cardsAmountIsInvalid = filledCards.length === 0;
+
+        setCardsAmountError(
+            cardsAmountIsInvalid
+            ? "Please fill out at least one card to continue !"
+            : ""
+        )
 
        // setDefinitionLanguageError(selectedDefinitionLanguage === "default" ? "Please select a definition language" : "");
 
@@ -262,6 +286,7 @@ export default function CreateVocabsetPage({}) {
             definitionLanguageIsInvalid ||
             sameLanguageIsInvalid ||
             Object.keys(cardErrors).length > 0
+            ||cardsAmountIsInvalid
         ) {
             return;
         }
@@ -350,7 +375,12 @@ export default function CreateVocabsetPage({}) {
                                                 <h1 className="modal-title fs-5" id="importJsonModalLabel">Import From Json</h1>
                                             </div>
                                             <div className="modal-body">
-                                                <textarea className="form-control" id="jsonInputArea" rows={10} value={jsonInput} onChange={(event) => {
+                                                <textarea 
+                                                className="form-control" 
+                                                id="jsonInputArea" 
+                                                rows={10} 
+                                                value={jsonInput} 
+                                                onChange={(event) => {
                                                     setJsonInput(event.target.value);
                                                     setJsonImportError("");
                                                 }}></textarea>
@@ -375,11 +405,12 @@ export default function CreateVocabsetPage({}) {
                     <div className="row">
                         <div className="col d-flex justify-content-center">
                             <div className="col-md-4 mb-3">
-                                <label id = "vocabset-name-label" htmlFor="vocabset-name" className="form-label vocab-set-form-labels">Title</label>
+                                <label id = "vocabset-name-label" htmlFor="vocabset-name" className="form-label vocab-set-form-labels" >Title</label>
                                 <input
                                     type="text" 
                                     className={`form-control ${titleError ? "is-invalid" : ""}`}
-                                    id="vocabset-name" 
+                                    id="vocabset-name"
+                                    maxLength={100}
                                     placeholder="Enter a Name for the Vocabulary Set" 
                                     value={vocabSetTitle} 
                                     onChange={(event) => {
@@ -414,7 +445,8 @@ export default function CreateVocabsetPage({}) {
                                 <label id = "vocabset-description-label" htmlFor="vocabset-description" className="form-label vocab-set-form-labels">Description</label>
                                 <textarea
                                     className={`form-control ${descriptionError ? "is-invalid" : ""}`} 
-                                    id="vocabset-description" 
+                                    id="vocabset-description"
+                                    maxLength={500}
                                     rows={3} placeholder="Enter a description for the Vocabulary Set"
                                     value={vocabSetDescription}
                                     ref={(element) => {
@@ -436,6 +468,7 @@ export default function CreateVocabsetPage({}) {
                                         }
                                     }}>
                                 </textarea>
+                                <div className="form-text text-end">{vocabSetDescription.length} / 500</div>
 
                                 {
                                     descriptionError && (
@@ -460,6 +493,7 @@ export default function CreateVocabsetPage({}) {
                                         cardErrors[card.id] === "Term required" ? "is-invalid" : ""
                                     }`}
                                     id={`term-${card.id}`} 
+                                    maxLength={100}
                                     placeholder="Term"
                                     value={card.term}
                                     onChange={(event) => {
@@ -519,7 +553,8 @@ export default function CreateVocabsetPage({}) {
                                     className={`form-control ${
                                         cardErrors[card.id] === "Definition required" ? "is-invalid" : ""
                                     }`}
-                                    id={`definition-${card.id}`} 
+                                    id={`definition-${card.id}`}
+                                    maxLength={100}
                                     placeholder="Definition"
                                     value={card.definition}
                                     onChange={(event) => {
@@ -571,10 +606,19 @@ export default function CreateVocabsetPage({}) {
                             </div>
                         </div>
                     ))}
+                    
+                    {cardsAmountError && (
+                        <div className="row">
+                            <div className="col d-flex justify-content-center">
+                                <p className="cardsAmountError text-center">{cardsAmountError}</p>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Add Card Button */}
                     <div className="row">
                         <div className="col d-flex justify-content-center">
+                            <br/>
                             <button type="button" className="btn btn-primary vocab-set-form-labels" onClick={() =>addCard()}>Add Card</button>
                         </div>
                     </div>

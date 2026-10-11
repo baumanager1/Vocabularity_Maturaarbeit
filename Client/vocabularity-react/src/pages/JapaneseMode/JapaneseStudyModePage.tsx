@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { replace, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import JapaneseLesson from "../../models/JapaneseMode/JapaneseLesson";
 import { useAuth } from "../../components/Authentication/AuthContext";
@@ -70,7 +70,7 @@ export default function JapaneseStudyModePage() {
         
                     if (!response.ok) {
                         if(response.status === 404) {
-                            navigate("/404");
+                            navigate("/404" ,{replace: true});
                             return
                         }
                         console.error("Request failed:", response.status);

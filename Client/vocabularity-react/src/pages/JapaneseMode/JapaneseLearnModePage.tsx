@@ -1,5 +1,5 @@
 import LoginPrompt from "../../components/Authentication/LoginPrompt"
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 import {useAuth} from "../../components/Authentication/AuthContext";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -156,7 +156,7 @@ export default function JapaneseLearnModePage() {
 
                     if(!lockResponse.ok)
                     {
-                        navigate("/errors/lessonLocked")
+                        navigate("/errors/lessonLocked", {replace: true})
                         return;
                     }
 
@@ -171,7 +171,7 @@ export default function JapaneseLearnModePage() {
     
                 if (!response.ok) {
                     if(response.status === 404) {
-                        navigate("/404");
+                        navigate("/404", {replace : true});
                         return
                     }
                     console.error("Request failed:", response.status);

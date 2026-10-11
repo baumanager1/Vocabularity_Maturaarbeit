@@ -28,3 +28,7 @@
 .learn-floating > .form-control:not(:placeholder-shown) ~ label {
     font-size: 18px;
 }
+
+.cardsAmountError {
+  color: red;
+}

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 import {useAuth} from "../../components/Authentication/AuthContext";
 import LoginPrompt from "../../components/Authentication/LoginPrompt";
 import { useEffect, useState, useRef } from "react";
@@ -15,6 +15,8 @@ export default function LearnSessionPage() {
         const[answer, setAnswer] = useState("");
     const { vocabsetid } =useParams();
     const navigate = useNavigate();
+    const GUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
     
     const[answerLanguage, setAnswerLanguage] = useState("");
     const [learnSessionItems, setLearnSessionItems] = useState<Word[]>([]);
@@ -95,6 +97,11 @@ export default function LearnSessionPage() {
     }
 
     useEffect(() => {
+
+        if(!vocabsetid || !GUID_REGEX.test(vocabsetid)) {
+            navigate ("/404", {replace : true})
+        }
+        
         async function fetchVocabset() {
             try {
                 const token = localStorage.getItem('jwt');
@@ -107,11 +114,9 @@ export default function LearnSessionPage() {
                 });
 
             console.log("Status:", response.status);
-            console.log("Content-Type:", response.headers.get("content-type"));
-
             if (!response.ok) {
-                if(response.status === 404) {
-                    navigate("/404");
+                if(response.status === 404 || response.status === 400) {
+                    navigate("/404", {replace : true});
                     return
                 }
                 console.error("Request failed:", response.status);
@@ -123,7 +128,6 @@ export default function LearnSessionPage() {
             setLearnSessionItems(shuffledWords);
             setAskedWord(shuffledWords[0]?.term || "Term");
 
-            console.log(data);
             
 
             }

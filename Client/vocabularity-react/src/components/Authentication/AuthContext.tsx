@@ -62,7 +62,7 @@ export function AuthProvider({children} : {children : React.ReactNode}) {
         }
         catch (error) {
             console.error("Error during logout:", error);
-            navigate("/error500 ", {state: {message: (error as Error).message}});
+            navigate("/error500 ", {state: {message: (error as Error).message}, replace : true}, );
         }
 
     }
