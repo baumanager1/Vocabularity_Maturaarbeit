@@ -2,6 +2,6 @@
 {
     public class ChangeLearnstateVocabSetRequest
     {
-        public bool? learnState {  get; set; }
+        public bool? LearnState {  get; set; }
     }
 }

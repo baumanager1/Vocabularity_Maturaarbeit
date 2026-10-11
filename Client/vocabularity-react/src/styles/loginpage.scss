@@ -1,17 +1,25 @@
 #login-advisory {
     margin-top: 60px;
-    margin-bottom: 70px;
+    margin-bottom: 0px;
     display: flex;
     justify-content: center;
 }
 
-.login-container {
+#login-advisory-muted {
+    margin-top: 25px;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+
+.container-md.login-container {
     max-width: 450px;
-    margin-top: 40px;
+    margin-top: 70px;
 }
 
 .user-login {
     width: 100%;
+    text-align: left;
 }
 
 .login-separator {

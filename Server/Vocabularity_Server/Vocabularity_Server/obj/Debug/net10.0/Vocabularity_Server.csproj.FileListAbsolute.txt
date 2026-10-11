@@ -142,4 +142,3 @@ C:\Users\kevin\OneDrive - Alte Kantonsschule Aarau\Vocabularity_Maturaarbeit\Ser
 C:\Users\kevin\OneDrive - Alte Kantonsschule Aarau\Vocabularity_Maturaarbeit\Server\Vocabularity_Server\Vocabularity_Server\obj\Debug\net10.0\Vocabularity_Server.pdb
 C:\Users\kevin\OneDrive - Alte Kantonsschule Aarau\Vocabularity_Maturaarbeit\Server\Vocabularity_Server\Vocabularity_Server\obj\Debug\net10.0\Vocabularity_Server.genruntimeconfig.cache
 C:\Users\kevin\OneDrive - Alte Kantonsschule Aarau\Vocabularity_Maturaarbeit\Server\Vocabularity_Server\Vocabularity_Server\obj\Debug\net10.0\ref\Vocabularity_Server.dll
-C:\Users\kevin\OneDrive - Alte Kantonsschule Aarau\Vocabularity_Maturaarbeit\Server\Vocabularity_Server\Vocabularity_Server\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

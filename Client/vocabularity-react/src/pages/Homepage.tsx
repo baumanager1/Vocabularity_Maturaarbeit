@@ -12,7 +12,10 @@ export default function Homepage() {
         {user ? (
             <h1 id="welcome-message">Continue where you left off, {user.username}!</h1>
         ) : (
-            <LoginPrompt title="Homepage" />
+            <LoginPrompt 
+                title="Welcome to Vocabularity" 
+                message="Please sign in to get started"
+            />
         )}
         </>
     );

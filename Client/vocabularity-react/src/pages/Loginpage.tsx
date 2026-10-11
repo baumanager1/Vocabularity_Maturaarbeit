@@ -63,7 +63,8 @@ export default function Loginpage() {
     return (
         <>
 
-        <h1 id="login-advisory">Dear User, please login</h1>
+        <h1 id="login-advisory">Welcome back</h1>
+        <p id='login-advisory-muted' className='text-center text-muted'>Sign in to your Vocabularity account</p>
 
         <div className="container-md login-container mx-auto">
             <div className='row'>
@@ -75,7 +76,7 @@ export default function Loginpage() {
                             type="text"
                             className='form-control'
                             id='usernameInput' 
-                            placeholder='Enter username'
+                            placeholder='Username'
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             />
@@ -96,8 +97,9 @@ export default function Loginpage() {
                                 </div>
                             )}
                         </div>
-                        
-                        <button type='submit' className='btn btn-primary'>Login</button>
+                        <div className='text-center'>
+                            <button type='submit' className='btn btn-primary'>Log in</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -106,10 +108,10 @@ export default function Loginpage() {
                 <span>or</span>
             </div>
             <div className="row">
-                <div className="col google-login mt-3">
+                <div className="col google-login mt-3 d-flex justify-content-center">
                 <GoogleLogin
                     onSuccess={(credentialResponse: CredentialResponse) => {
-                        console.log(credentialResponse);
+                        console.log("Login worked");
                         handleLoginSuccess(credentialResponse);
                     }}
                     onError={() => {

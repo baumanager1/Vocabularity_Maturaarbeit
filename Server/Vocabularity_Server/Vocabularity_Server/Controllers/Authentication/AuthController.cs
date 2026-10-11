@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vocabularity_Server.Data;
 using Vocabularity_Server.Models.Authentication.Requests;
-using Vocabularity_Server.Models.Entities;
+using Vocabularity_Server.Models.VocabularyMode.Entities;
 
 namespace Vocabularity_Server.Controllers.Authentication
 {

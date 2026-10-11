@@ -2,7 +2,7 @@
 using Vocabularity_Server.Models.VocabularyMode.Requests;
 using System.Diagnostics;
 using Vocabularity_Server.Data;
-using Vocabularity_Server.Models.Entities;
+using Vocabularity_Server.Models.VocabularyMode.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -238,8 +238,6 @@ namespace Vocabularity_Server.Controllers.LearnMode
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
-
         public async Task<IActionResult> ChangeLearnState(
             Guid? vocabularySetId,
             int? wordId,
@@ -264,7 +262,7 @@ namespace Vocabularity_Server.Controllers.LearnMode
                 });
             }
 
-            if (request.learnState == null)
+            if (request.LearnState == null)
             {
                 return BadRequest(new
                 {
@@ -301,7 +299,7 @@ namespace Vocabularity_Server.Controllers.LearnMode
 
             try
             {
-                word.learnState = request.learnState.Value;
+                word.learnState = request.LearnState.Value;
                 await _appDbContext.SaveChangesAsync();
 
                 return NoContent();

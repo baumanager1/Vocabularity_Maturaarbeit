@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Vocabularity_Server.Models.Entities;
+using Vocabularity_Server.Models.VocabularyMode.Entities;
 
 namespace Vocabularity_Server.Controllers.Authentication
 {

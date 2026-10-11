@@ -4,11 +4,12 @@ import LoginPrompt from "../../components/Authentication/LoginPrompt";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./styles/LearnSessionPage.scss";
-import type { LearnVocabSet, Word } from "../../models/LearningMode/LearnVocabSet";
-import getLanguageName from "../../models/LearningMode/Languagepair";
+import type { LearnVocabSet, Word } from "../../models/VocabularyMode/LearnVocabSet";
+import getLanguageName from "../../models/VocabularyMode/Languagepair";
 import shuffleArray from "../../utils/shuffleArray";
 import reinsertWord from "../../utils/reinsertWord";
 import normalizeAnswer from "../../utils/normalizeAnswer";
+import SetCompletionPage from "./SetCompletionPage";
 export default function LearnSessionPage() {
     const { user } = useAuth();
         const[answer, setAnswer] = useState("");
@@ -23,6 +24,7 @@ export default function LearnSessionPage() {
     const submitButtonRef = useRef<HTMLButtonElement>(null);
     const [isCorrect, setIsCorrect] = useState(false);
     const [correctAnswer, setCorrectAnswer] = useState("");
+    const [finished, setFinished] = useState(false);
 
     function submitAnswer(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -33,9 +35,8 @@ export default function LearnSessionPage() {
         console.log("Checking answer:", answer);
 
         if (learnSessionItems.length === 0) {
-            console.log("No more words to ask.");
-            navigate(`/learn/vocabset/${vocabsetid}/completion`);
-            return;
+            setFinished(true)
+              return;
         }
 
         if(!correctionMode) {
@@ -81,7 +82,12 @@ export default function LearnSessionPage() {
         }
         
         else {
-            setAskedWord(learnSessionItems[0].term);
+            const next = learnSessionItems[0];
+            if(!next) {
+                setFinished(true);
+                return;
+            }
+            setAskedWord(next.term);
             setAnswer("");
             // load next Question
             setCorrectionMode(false);
@@ -112,7 +118,7 @@ export default function LearnSessionPage() {
                 return;
             }
             const data :LearnVocabSet = await response.json();
-            setAnswerLanguage(getLanguageName(data.termLanguage));
+            setAnswerLanguage(getLanguageName(data.definitionLanguage));
             const shuffledWords = shuffleArray(data.words);
             setLearnSessionItems(shuffledWords);
             setAskedWord(shuffledWords[0]?.term || "Term");
@@ -139,10 +145,11 @@ export default function LearnSessionPage() {
         }
     }, [correctionMode]);
 
-    
+    if(!user) return <LoginPrompt />
+
+    if (finished) return <SetCompletionPage />;
     return (
         <>
-        {user ? (
             <div className="container-fluid learn-session-container">
                 <div className="row term-row">
                     <div className="col d-flex justify-content-center">
@@ -156,7 +163,7 @@ export default function LearnSessionPage() {
                 <div className="row">
                     <div className="col d-flex justify-content-center answerfield-col">
                         <div className="col-md-4 mb-3 mx-auto">
-                            <form onSubmit={submitAnswer}>
+                            <form onSubmit={submitAnswer} autoComplete="off">
                                 <div className="answer-section">
                                     <div className="form-floating learn-floating">
                                     {!correctionMode ? (
@@ -174,7 +181,7 @@ export default function LearnSessionPage() {
 
                                             <label htmlFor="answer-field">
                                                 {answerLanguage !== "" 
-                                                    ? "Enter Answer in " + answerLanguage 
+                                                    ? "Enter your answer in " + answerLanguage 
                                                     : "Enter Answer"}
                                                 </label>
                                         </>
@@ -213,7 +220,6 @@ export default function LearnSessionPage() {
                     </div>
                 </div>
             </div>
-        ) : (<LoginPrompt/>)}
         </>
     );
 }

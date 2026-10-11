@@ -1,25 +1,35 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function LoginPrompt({ title = "Homepage"}) {
-    const navigate = useNavigate();
+interface LoginPromptProps {
+    title?: string
+    message? : string
+}
 
+export default function LoginPrompt(  
+    { 
+        title = "Welcome to Vocabularity",
+        message = "Please sign in to continue"
+    }: LoginPromptProps
+) {
     return (
         <div className="container-fluid">
             <div className="row">
                 <h1>{title}</h1>
             </div>
             <div className="row login-prompt">
-                <h1 id="login-prompt">"Dear User, please login to continue"</h1>
+                <h1 id="login-prompt" style={{fontSize: "40px", textAlign: "center"}}>{message}</h1>
             </div>
             <div className="row login-button">
                 <div className="col d-flex justify-content-center">
-                    <button className="btn btn-primary" onClick={() => navigate("/login")}>
-                        "Login
-                    </button>
+                    <Link 
+                    className="btn btn-primary"
+                    to="/login"
+                    >
+                        Log in 
+                    </Link>
                 </div>
             </div>
         </div>
     );
 }
 
-export default LoginPrompt;

@@ -18,7 +18,9 @@ import VocabsetCreatedPage from './pages/VocabularyMode/VocabsetCreatedPage';
 import LearnSessionPage from './pages/VocabularyMode/LearnSessionPage';
 import SetCompletionPage from './pages/VocabularyMode/SetCompletionPage';
 import NotFoundErrorPage from './pages/Errorpages/NotFoundErrorPage';
-
+import JapaneseStudyModePage from './pages/JapaneseMode/JapaneseStudyModePage';
+import JapaneseLearnModePage from './pages/JapaneseMode/JapaneseLearnModePage';
+import LessonLockedErrorPage from './pages/Errorpages/JapaneseMode/LessonLockedErrorPage';
 
 export default function App() {
   return(
@@ -30,7 +32,6 @@ export default function App() {
   <Route path="/" element={<Homepage />} />
   <Route path="*" element={<NotFoundErrorPage />} />
   <Route path="/dashboard" element={<Homepage />} />
-  <Route path='/navbar' element ={<Navbar />} />
   <Route path='/learn' element={ <Learnhub />} />
   <Route path='/login' element={<Loginpage />} />
   <Route path='/profile' element={<Profilepage />} />
@@ -40,7 +41,9 @@ export default function App() {
   <Route path='/error500' element={<InternalServerErrorPage />} />
   <Route path='/learn/vocabset-created' element={<VocabsetCreatedPage />} />
   <Route path='/learn/vocabset/:vocabsetid' element ={<LearnSessionPage />} />
-  <Route path='/learn/vocabset/:vocabsetid/completion' element ={<SetCompletionPage />} />
+  <Route path='/japanese/study/lesson/:japaneseLessonId' element={<JapaneseStudyModePage />} />
+  <Route path='/japanese/learn/lesson/:japaneseLessonId' element={<JapaneseLearnModePage />} />
+  <Route path='/errors/lessonLocked' element={<LessonLockedErrorPage />} />
   <Route path='/404' element={<NotFoundErrorPage/>} />
 </Routes>
 

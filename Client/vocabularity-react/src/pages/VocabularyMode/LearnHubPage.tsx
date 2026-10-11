@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {useAuth} from "../../components/Authentication/AuthContext";
 import LoginPrompt from "../../components/Authentication/LoginPrompt";
 import "./styles/LearnHubPage.scss"
-import {VocabularySetSummary} from "../../models/LearningMode/VocabularySet";
+import {VocabularySetSummary} from "../../models/VocabularyMode/VocabularySet";
 
 
 export default function Learnhub() {
@@ -68,7 +68,7 @@ export default function Learnhub() {
                     </div>
                 </div>
             </div>
-        ) : (<LoginPrompt/>)}
+        ) : (<LoginPrompt title="Ready to study?"/>)}
         </>
     );
 }

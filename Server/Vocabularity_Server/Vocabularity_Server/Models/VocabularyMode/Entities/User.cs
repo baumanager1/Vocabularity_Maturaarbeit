@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Vocabularity_Server.Models.Entities
+namespace Vocabularity_Server.Models.VocabularyMode.Entities
 {
     [Table("users")]
     public class User

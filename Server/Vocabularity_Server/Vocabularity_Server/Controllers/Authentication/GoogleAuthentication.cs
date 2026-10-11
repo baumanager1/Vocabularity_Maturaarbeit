@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Vocabularity_Server.Data;
-using Vocabularity_Server.Models.Entities;
+using Vocabularity_Server.Models.VocabularyMode.Entities;
 namespace Vocabularity_Server.Controllers.Authentication
 {
     [Route("/api/auth/google")]

@@ -11,14 +11,14 @@ export default function Profile() {
         {user ? (
                <div className ="container-fluid">
             <div className="row">
-                <h1>Profilepage</h1>
+                <h1>Profile Page</h1>
             </div>
             <div className="row login-prompt">   
-                    <h1 id="login-prompt">Click here to Sign Out</h1>
+                    <h1 id="login-prompt">Click here to sign out</h1>
             </div>
             <div className="row login-button">
                 <div className="col d-flex justify-content-center">
-                    <button className="btn btn-primary" onClick={() => logout()}>Sign Out</button>
+                    <button className="btn btn-primary" onClick={() => logout()}>Sign out</button>
                 </div>
             </div>
         </div>

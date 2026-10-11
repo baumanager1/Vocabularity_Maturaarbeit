@@ -2,12 +2,13 @@ import { useNavigate } from "react-router-dom";
 import {useAuth} from "../../components/Authentication/AuthContext";
 import LoginPrompt from "../../components/Authentication/LoginPrompt";
 import { useState, useRef } from 'react';
-import { learningLanguages, LanguageType, LanguagePair, LearningLanguages , definitionLanguages} from "../../models/LearningMode/Languagepair";
-import getLanguageName from "../../models/LearningMode/Languagepair";
+import { learningLanguages, LanguageType, LanguagePair, LearningLanguages , definitionLanguages} from "../../models/VocabularyMode/Languagepair";
+import getLanguageName from "../../models/VocabularyMode/Languagepair";
 import "./styles/CreateVocabsetPage.scss";
-import  VocabularyCard from "../../models/LearningMode/VocabularyCard";
-import VocabularySet from "../../models/LearningMode/VocabularySet";
+import  VocabularyCard from "../../models/VocabularyMode/VocabularyCard";
+import VocabularySet from "../../models/VocabularyMode/VocabularySet";
 import { Modal } from "bootstrap";
+import VocabsetCreatedPage from "./VocabsetCreatedPage";
 
 export default function CreateVocabsetPage({}) {
     const { user } = useAuth();
@@ -46,7 +47,7 @@ export default function CreateVocabsetPage({}) {
     const [termLanguageError, setTermLanguageError] = useState("");
     const [definitionLanguageError, setDefinitionLanguageError] = useState("");
     const [isSameLanguageError, setIsSameLanguageError] = useState(false);
-
+    const [created, setIsCreated] = useState(false)
 
 
     const importFromJson = () => {
@@ -291,7 +292,8 @@ export default function CreateVocabsetPage({}) {
         console.log("Response: ", response)
 
         if (response.status === 201) {
-            navigate("/learn/vocabset-created")
+            setIsCreated(true);
+            return;
         }
         else if (response.status === 409 ) {
             const data = await response.json();
@@ -323,6 +325,8 @@ export default function CreateVocabsetPage({}) {
         console.log(validCards);
     };
 
+    if(created) return <VocabsetCreatedPage />;
+    
     return (
         <>
         {user ? (
@@ -586,7 +590,12 @@ export default function CreateVocabsetPage({}) {
                 </form>
             </div>
                     
-        ) : (<LoginPrompt/>)}
+        ) : (
+        <LoginPrompt
+            title="Create a vocabulary set"
+            message="Sign in to create and learn your vocabulary sets"
+        />
+    )}
         </>
     );
 }
