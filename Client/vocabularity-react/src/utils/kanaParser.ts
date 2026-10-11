@@ -18,11 +18,25 @@ export  class kanaParser {
         ? hiragana
         : katakana
 
-        const input = mixedString
+        const input = mixedString.toLowerCase();
         var i : number = 0;
         let result = "";
+        const consonants = "bcdfghjklmpqrstvwxyz";
+
 
         while (i < input.length) {
+            const current = input[i];
+
+            if(
+                i + 1 < input.length &&
+                current === input[i + 1] &&
+                consonants.includes(current)
+            ) {
+            result += kanaType === KanaType.HIRAGANA ?  "っ" : "ッ";
+            i++;
+            continue;
+            }
+
             var matched = false;
             // Try 3, 2, 1 length matches
             for (let len :number = 3; len >= 1; len--) {
@@ -39,7 +53,6 @@ export  class kanaParser {
                         matched = true;
                         break;
                     }
-
                     // Check if sub is a romaji syllable
                     let kana: string = this.currentKanaMap[sub]
                     if (kana != null) {
